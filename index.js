@@ -1,4 +1,5 @@
-
+//lesson 1
+//************************************************************************* */
 //impotrs
 const express = require('express');
 const http = require('http');
@@ -92,3 +93,8 @@ app.get('/todoList', (req, res) => {
 http.createServer(app).listen(3000, () => {
     console.log('Server is working on port 3000');
 });
+
+//get - информативные данные в query параметре
+//post - в теле запроса
+//************************************************************************* */
+
