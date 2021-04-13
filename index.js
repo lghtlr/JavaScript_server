@@ -9,6 +9,16 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
+app.use((req, res, next) => {
+    //req.body.secretKey
+    console.log(req.headers)
+    if (req.headers.secretkey === 'lesson') { //(req.body?.secretkey === 'lesson') ----> if != null
+        next() //передает управление следующему обработчику
+    } else {
+        res.status(403).json({ message: 'oops' });
+    }
+})
+
 //request
 app.all('/', (req, res) => {
 
