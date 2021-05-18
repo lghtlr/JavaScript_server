@@ -4,6 +4,9 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
+const { syncHandler, errorHandler } = require('./middleware');
+const ErrorResponse = require('./ErrorResponse');
+
 
 //init zone
 const app = express();
@@ -99,6 +102,16 @@ app.get('/todoList', (req, res) => {
 })
 
 //app.post('')
+
+//app.post('/t', syncHandler((req, res, next) => {let k; k.length}));
+app.post('/t', syncHandler((req, res, next) => {
+  //  throw new Error("this is error")
+    throw new ErrorResponse("This is error 400", "fefWEF")
+}));
+
+//функция, которая готова выплюнуть ошибку
+
+app.use(errorHandler); //функция, которая готова принять ошибку
 
 //create server
 http.createServer(app).listen(3000, () => {
