@@ -10,11 +10,7 @@ const syncHandler = (fn) => (req, res, next) => {
 
 //для асинхронных функций
 const asyncHandler = (fn) => (req, res, next) => {
-    try {
-        //fn(req, res, next);
-    } catch (error) {
-        //next(error);
-    }
+    Promise.resolve(fn(req, res, next)).catch(next)
 };
 
 const errorHandler = (e, req, res, next) => {
@@ -28,5 +24,6 @@ const errorHandler = (e, req, res, next) => {
 }
 module.exports = {
     syncHandler,
+    asyncHandler,
     errorHandler,
 };

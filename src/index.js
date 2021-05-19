@@ -4,15 +4,24 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
-const { syncHandler, errorHandler } = require('./middleware');
-const ErrorResponse = require('./ErrorResponse');
-
+const { syncHandler, asyncHandler, errorHandler } = require('./middlewares/middlewares');
+const ErrorResponse = require('./classes/ErrorResponse');
+//const testRouter = require('./controllers/test.controller');
+const apiRouter = require('./controllers/api.controller');
+const { initDB } = require('./dataBase');
 
 //init zone
 const app = express();
-app.use(cors());
 
-app.use((req, res, next) => {
+//initDB
+initDB();
+
+
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+/*app.use((req, res, next) => {
     //req.body.secretKey
     console.log(req.headers)
     //Получение заголовка запроса: req.header(‘secretKey’)
@@ -21,7 +30,7 @@ app.use((req, res, next) => {
     } else {
         res.status(403).json({ message: 'oops' });
     }
-})
+})*/
 
 //request
 app.all('/', (req, res) => {
@@ -109,9 +118,26 @@ app.post('/t', syncHandler((req, res, next) => {
     throw new ErrorResponse("This is error 400", "fefWEF")
 }));
 
+/*app.post('/test1', asyncHandler(async(req, res) => {
+    //  throw new Error("this is error")
+      await k();
+  }));
+
+  async function k() {
+      console.log("Func K");
+      throw new ErrorResponse("ERROR!!", 400)
+  }*/
+
+  
+
+  app.use('/api/todos', apiRouter);
+  //app.use('/test', testRouter);
+
+
 //функция, которая готова выплюнуть ошибку
 
 app.use(errorHandler); //функция, которая готова принять ошибку
+
 
 //create server
 http.createServer(app).listen(3000, () => {
